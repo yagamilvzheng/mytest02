@@ -1,0 +1,14 @@
+<!--<?xml version="1.0" encoding="UTF-8" ?>-->
+<!--<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"-->
+        <!--"http://mybatis.org/dtd/mybatis-3-config.dtd">-->
+<!--<configuration>-->
+    <!--<plugins>-->
+        <!--&lt;!&ndash;分页器&ndash;&gt;-->
+        <!--<plugin interceptor="com.github.pagehelper.PageHelper">-->
+            <!--&lt;!&ndash;指定数据库&ndash;&gt;-->
+            <!--<property name="dialect" value="mysql"/>-->
+
+        <!--</plugin>-->
+    <!--</plugins>-->
+<!--</configuration>-->
+<!--在sqlmapperfactoryBean里面配置了分页器就不必再专门配置了-->
