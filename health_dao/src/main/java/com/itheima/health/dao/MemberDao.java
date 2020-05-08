@@ -2,6 +2,9 @@ package com.itheima.health.dao;
 
 import com.itheima.health.pojo.Member;
 
+import java.util.List;
+import java.util.Map;
+
 public interface MemberDao {
     Member findByTelephone(String telephone);
 
@@ -14,4 +17,6 @@ public interface MemberDao {
     Integer findMemberTotalCount();
 
     Integer findMemberCountAfterDate(String thisWeekMonday);
+
+    List<Map<String,Integer>> findMemberBySex();
 }

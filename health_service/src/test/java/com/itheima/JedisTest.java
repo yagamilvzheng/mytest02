@@ -1,12 +1,8 @@
 package com.itheima;
 
 import com.alibaba.fastjson.JSONObject;
-import com.itheima.health.dao.RoleDao;
-import com.itheima.health.dao.SetmealDao;
-import com.itheima.health.dao.UserDao;
-import com.itheima.health.pojo.Role;
-import com.itheima.health.pojo.Setmeal;
-import com.itheima.health.pojo.User;
+import com.itheima.health.dao.*;
+import com.itheima.health.pojo.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +22,10 @@ public class JedisTest {
 
 @Autowired
 private SetmealDao setmealDao;
+@Autowired
+CheckGroupDao checkGroupDao;
+@Autowired
+    CheckItemDao checkItemDao;
 
     @Test
     public void test02(){
@@ -37,5 +37,28 @@ private SetmealDao setmealDao;
         List<Setmeal> setmeals = JSONObject.parseArray(setmeal2, Setmeal.class);
 
         System.out.println(setmeals);
+    }
+
+    @Test
+    public void test03(){
+
+        String s1 = jedisPool.getResource().get("123");
+        Setmeal setmeal = JSONObject.parseObject(s1, Setmeal.class);
+        System.out.println("在redis中查询到的结果------------------------02"+setmeal);
+        if (setmeal==null){
+            setmeal = setmealDao.findById(13);
+            List<CheckGroup> checkGroupList = checkGroupDao.findCheckGroupListBySetmealId(setmeal.getId());
+            // 遍历checkGroupList
+            for(CheckGroup checkgroup:checkGroupList){
+                List<CheckItem> checkItemList = checkItemDao.findCheckItemListByCheckGroupId(checkgroup.getId());
+                checkgroup.setCheckItems(checkItemList);
+            }
+            setmeal.setCheckGroups(checkGroupList);
+            String string =  JSONObject.toJSONString(setmeal);
+            jedisPool.getResource().sadd("123", string);
+            System.out.println("在sql数据库中查询到的结果------------------------02"+setmeal);
+        }
+
+
     }
 }

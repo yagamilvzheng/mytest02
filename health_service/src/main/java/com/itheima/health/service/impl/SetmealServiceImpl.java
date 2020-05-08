@@ -74,16 +74,16 @@ public class SetmealServiceImpl implements SetmealService {
         //JSONObject jsonObject = JSONObject.parseObject(s);
         //JSONArray array = JSONObject.parseArray(s);
         List<Setmeal> setmeals = new ArrayList<>();
-            if(setmeals.isEmpty()){
+        String s = jedisPool.getResource().get(SETMEAL_CONTENT_PAGE);
+        setmeals = JSONObject.parseArray(s, Setmeal.class);
+        System.out.println("在redis中查询到的结果------------------------01");
+
+            if(setmeals==null){
                 setmeals = setmealDao.findAll();
                 JSONObject.toJSONString(setmeals);
                 System.out.println("在sql数据库中查询到的结果------------------------01");
                 return setmeals;
-            }else {
-                String s = jedisPool.getResource().get(SETMEAL_CONTENT_PAGE);
-                setmeals = JSONObject.parseArray(s, Setmeal.class);
             }
-        System.out.println("在redis中查询到的结果------------------------01");
         return setmeals;
     }
     @Autowired
@@ -110,6 +110,8 @@ public class SetmealServiceImpl implements SetmealService {
         //取出redis里面的数据,转换成前端页面需要的格式
         //String s = jedisPool.getResource().get(SETMEA_LITEM_PAGE);
         Setmeal setmeal = null;
+        String s = jedisPool.getResource().get(SETMEA_LITEM_PAGE);
+        setmeal = JSONObject.parseObject(s, Setmeal.class);
         if (setmeal==null){
             setmeal = setmealDao.findById(id);
         List<CheckGroup> checkGroupList = checkGroupDao.findCheckGroupListBySetmealId(setmeal.getId());
@@ -123,9 +125,6 @@ public class SetmealServiceImpl implements SetmealService {
             jedisPool.getResource().sadd(SETMEA_LITEM_PAGE, string);
             System.out.println("在sql数据库中查询到的结果------------------------02");
             return setmeal;
-        }else {
-            String s = jedisPool.getResource().get(SETMEA_LITEM_PAGE);
-            setmeal = JSONObject.parseObject(s, Setmeal.class);
         }
         System.out.println("在redis中查询到的结果------------------------02");
         return setmeal;

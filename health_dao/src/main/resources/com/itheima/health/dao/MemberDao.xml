@@ -43,4 +43,9 @@
         select count(id) from t_member
     </select>
 
+    <!--根据性别查询会员数量-->
+    <select id="findMemberBySex" resultType="map">
+        SELECT sex as name ,COUNT(sex) as value FROM t_member GROUP BY sex
+    </select>
+
 </mapper>

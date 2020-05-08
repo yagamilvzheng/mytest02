@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
 @Transactional
 @Service(interfaceClass = MemberService.class)
 public class MemberServiceImpl implements MemberService {
@@ -22,5 +24,12 @@ public class MemberServiceImpl implements MemberService {
            list.add(count);
         }
         return list;
+    }
+
+    @Override
+    public List findMemberBySex() {
+       List<Map<String,Integer>> memberBySex = memberDao.findMemberBySex();
+
+        return memberBySex;
     }
 }
